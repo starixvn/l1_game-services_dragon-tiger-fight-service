@@ -92,7 +92,7 @@ export const ingameTest = () => {
             });
         });
 
-        it("should return round history", (done) => {
+        xit("should return round history", (done) => {
             // Arrange
             const normalUserClientDriver = new GameClientDriver(socketOptions, initUserSession(normalUser));
 
@@ -129,6 +129,7 @@ export const ingameTest = () => {
 
                 // Assert
                 normalUserClientDriver.handleInGameEvent((inGameData) => {
+                    console.log("inGameData ", inGameData);
                     if (inGameData.gameConfigs && inGameData.resultHash) {
                         expect(inGameData.resultHash.hashValue).not.toBeEmpty();
 

@@ -2,7 +2,7 @@ import { stub } from "jest-micro-auto-stub";
 import { Core, Table } from "sc-game-base";
 
 import SettleGameRoundConsumer from "../../../src/consumers/settle-game-round-consumer";
-import { card } from "../../../src/helpers/card";
+import { card } from "../../../src/helpers/;
 import { getCards } from "../../../src/helpers/result-helper";
 
 jest.mock("../../../src/helpers/result-helper.js");

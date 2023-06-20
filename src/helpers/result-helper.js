@@ -1,79 +1,81 @@
-import BaccaratGame from "./baccarat-game";
-import * as BaseCard from "./card";
-import { getCardValue } from "./card-helper";
-import { shuffle } from "./shuffle-helper";
+import { cards, cardNames, cardTypes } from "./card";
+import { Chance } from "chance";
+import _ from "lodash";
+import { shuffle as d3Shuffle } from "d3-array";
+import { Random as RandomJS, MersenneTwister19937 } from "random-js";
 
-const getCards = (randomMode = 1) => {
-    let cards = [...BaseCard.card];
-    cards = shuffle[randomMode](cards);
-    return cards;
+const shuffleCards = (deskOfCards) => {
+    const chance = new Chance();
+
+    for (let i = deskOfCards.length - 1; i >= 0; i -= 2) {
+        const randomCardIndex = Math.floor(chance.floating({ min: 0, max: 1 }) * (i + 1));
+        const term = deskOfCards[i];
+
+        deskOfCards[i] = deskOfCards[randomCardIndex];
+        deskOfCards[randomCardIndex] = term;
+    }
 };
 
-const generateResult = (mode) => {
-    const selectedMode = mode >= 1 && mode <= 3 ? mode : 1;
-    const cards = getCards(selectedMode);
-    const baccaratGame = new BaccaratGame([...cards]);
-    let action = "";
+const random1 = (arr) => {
+    const deskOfCards = [...arr];
 
-    do {
-        action = baccaratGame.getAction();
-        baccaratGame[action]();
-    } while (action !== BaccaratGame.Actions.finalComparison);
+    shuffleCards(deskOfCards);
+    shuffleCards(deskOfCards);
+    shuffleCards(deskOfCards);
 
-    return { player: baccaratGame.player, banker: baccaratGame.banker, cards: cards.slice(0, 6) };
+    return deskOfCards.slice(0, 2);
+};
+
+const random2 = (arr) => {
+    const chance = new Chance();
+    return chance.shuffle(chance.shuffle(chance.shuffle(arr)));
+};
+
+const random3 = (arr) => {
+    return d3Shuffle(d3Shuffle(d3Shuffle(arr)));
+};
+
+const random4 = (arr) => {
+    let result = arr;
+    const r = new RandomJS(MersenneTwister19937.autoSeed());
+
+    for (let i = 0; i < 3; i++) {
+        result = r.shuffle(arr);
+    }
+
+    return result;
+};
+
+const random5 = (arr) => {
+    return _.shuffle(_.shuffle(_.shuffle(arr)));
+};
+
+const randomModes = {
+    1: [random1],
+    2: [random2, random3],
+    3: [random4, random5],
 };
 
 const settlementRuleEntries = Object.entries({
-    player: ({ player, banker }) => {
-        const playerScore = getTotalScore(player);
-        const bankerScore = getTotalScore(banker);
-        return playerScore > bankerScore;
-    },
-    banker: ({ player, banker }) => {
-        const playerScore = getTotalScore(player);
-        const bankerScore = getTotalScore(banker);
-        return playerScore < bankerScore;
-    },
-    tie: ({ player, banker }) => {
-        const playerScore = getTotalScore(player);
-        const bankerScore = getTotalScore(banker);
-        return playerScore === bankerScore;
-    },
-    big: ({ player, banker }) => {
-        const numberOfCards = getNumberOfCards(player) + getNumberOfCards(banker);
-        return numberOfCards > 4;
-    },
-    small: ({ player, banker }) => {
-        const numberOfCards = getNumberOfCards(player) + getNumberOfCards(banker);
-        return numberOfCards === 4;
-    },
-    playerPair: ({ player, banker }) => hasPair(player),
-    bankerPair: ({ player, banker }) => hasPair(banker),
-    natural: ({ player, banker }) => {
-        const numberOfCards = getNumberOfCards(player) + getNumberOfCards(banker);
-        return numberOfCards === 4 && (getTotalScore(player) >= 8 || getTotalScore(banker) >= 8);
-    },
+    dragon: (roundResult) => roundResult.dragon.card > roundResult.tiger.card,
+    tiger: (roundResult) => roundResult.tiger.card > roundResult.dragon.card,
+    tie: (roundResult) => roundResult.tiger.card === roundResult.dragon.card,
+    blackDragon: (roundResult) => ["♣", "♠"].includes(roundResult.dragon.type),
+    redDragon: (roundResult) => ["♥", "♦"].includes(roundResult.dragon.type),
+    blackTiger: (roundResult) => ["♣", "♠"].includes(roundResult.tiger.type),
+    redTiger: (roundResult) => ["♥", "♦"].includes(roundResult.tiger.type),
 });
 
-const getTotalScore = (handResult) => {
-    return Object.values(handResult).reduce((result, card) => {
-        const cardValue = getCardValue(card);
+export const generateResult = (randomMode) => {
+    const randomShuffles = randomModes[randomMode] || randomModes[1];
+    const chance = new Chance();
+    const shuffle = chance.pickone(randomShuffles);
+    const deck = shuffle(cards);
 
-        return (result + cardValue) % 10;
-    }, 0);
+    return { dragon: deck[0], tiger: deck[1] };
 };
 
-const getNumberOfCards = (handResult) => {
-    return Object.values(handResult).filter((card) => !!card).length;
-};
-
-const hasPair = (handResult) => {
-    const { card1, card2 } = handResult;
-
-    return card1.card === card2.card;
-};
-
-const getSettlementResult = (roundResult) => {
+export const getSettlementResult = (roundResult) => {
     return settlementRuleEntries.reduce((result, [choice, rule]) => {
         result[choice] = rule(roundResult);
 
@@ -81,10 +83,6 @@ const getSettlementResult = (roundResult) => {
     }, {});
 };
 
-const generateRawResultForHash = ({ cards }) => {
-    let rawResult = "{";
-    rawResult += cards.map((card) => `${BaseCard.name[card.card]}${BaseCard.type[card.type]}`).join(" ") + "}";
-    return rawResult;
+export const generateRawResultForHash = ({dragon, tiger}) => {
+    return `{${cardNames[dragon.card]}${cardTypes[dragon.type]}${cardNames[tiger.card]}${cardTypes[tiger.type]}}`;
 };
-
-export { getCards, generateResult, getSettlementResult, generateRawResultForHash };

@@ -6,12 +6,13 @@ export default class Bot extends Table.Crons.TableGameBot {
         super(definition, gameData, publisher, userInfosRepository, tempBetsRepository);
 
         this.appConfigs = appConfigs;
-        this.betChoiceRatio = { PlayerBanker: 95, PlayerBankerPair: 1, Tie: 1, BigSmall: 3 };
+        this.betChoiceRatio = { DragonTiger: 70, DragonColor: 14, TigerColor: 14, Tie: 2};
 
-        this.playerBankerOpts = ["player", "banker"];
-        this.playerBankerPairOpts = ["playerPair", "bankerPair"];
+        this.dragonTigerOpts = ["dragon", "tiger"];
+        this.dragonColorOpts = ["blackDragon", "redDragon"];
+        this.tigerColorOpts = ["blackTiger", "redTiger"];
         this.tieOpts = ["tie"];
-        this.bigSmallOpts = ["big", "small"];
+        this.hedgeBetGroups = [this.dragonTigerOpts, this.dragonColorOpts, this.tigerColorOpts];
     }
 
     resetAllBotData() {
@@ -21,13 +22,13 @@ export default class Bot extends Table.Crons.TableGameBot {
 
     resetAllBets() {
         this.allBets = {
-            player: 0,
-            banker: 0,
-            big: 0,
-            small: 0,
+            dragon: 0,
+            tiger: 0,
             tie: 0,
-            playerPair: 0,
-            bankerPair: 0,
+            blackDragon: 0,
+            redDragon: 0,
+            blackTiger: 0,
+            redTiger: 0,
         };
 
         this.smallTickets = 0;
@@ -38,23 +39,23 @@ export default class Bot extends Table.Crons.TableGameBot {
 
         const betChoiceRatios = [
             {
-                group: this.playerBankerOpts,
+                group: this.dragonColorOpts,
                 underBetRatio:
-                    (this.getTotalAmountOnChoiceGroup(this.playerBankerOpts) * 100) / totalBotBet < this.betChoiceRatio.PlayerBanker,
+                    (this.getTotalAmountOnChoiceGroup(this.dragonColorOpts) * 100) / totalBotBet < this.betChoiceRatio.DragonTiger,
             },
             {
-                group: this.playerBankerPairOpts,
+                group: this.dragonColorOpts,
                 underBetRatio:
-                    (this.getTotalAmountOnChoiceGroup(this.playerBankerPairOpts) * 100) / totalBotBet <
-                    this.betChoiceRatio.PlayerBankerPair,
+                    (this.getTotalAmountOnChoiceGroup(this.dragonColorOpts) * 100) / totalBotBet <
+                    this.betChoiceRatio.DragonColor,
+            },
+            {
+                group: this.tigerColorOpts,
+                underBetRatio: (this.getTotalAmountOnChoiceGroup(this.tigerColorOpts) * 100) / totalBotBet < this.betChoiceRatio.TigerColor,
             },
             {
                 group: this.tieOpts,
                 underBetRatio: (this.getTotalAmountOnChoiceGroup(this.tieOpts) * 100) / totalBotBet < this.betChoiceRatio.Tie,
-            },
-            {
-                group: this.bigSmallOpts,
-                underBetRatio: (this.getTotalAmountOnChoiceGroup(this.bigSmallOpts) * 100) / totalBotBet < this.betChoiceRatio.BigSmall,
             },
         ];
 
@@ -63,11 +64,16 @@ export default class Bot extends Table.Crons.TableGameBot {
         const choice =
             underRatioGroups.length > 0
                 ? this.getRandomChoiceFromGroup(underRatioGroups[0].group)
-                : this.getRandomChoiceFromGroup(this.playerBankerOpts);
-
-        const previousUniqueChoices = bot.choices.filter((betChoice) => this.playerBankerOpts.includes(betChoice));
-
-        return previousUniqueChoices.length > 0 ? previousUniqueChoices[0] : choice;
+                : this.getRandomChoiceFromGroup(this.dragonTigerOpts);
+    
+        const hedgeBetGroup = this.hedgeBetGroups.find(group => group.includes(choice));
+        if(hedgeBetGroup){
+            const oppositeChoice = choice === hedgeBetGroup[0] ? hedgeBetGroup[1] : hedgeBetGroup[0];
+            return bot.choices.includes(oppositeChoice) ? oppositeChoice : choice;            
+        }
+        else{
+            return choice;
+        }        
     }
 
     getMaxBet(bot, choice) {
@@ -77,7 +83,7 @@ export default class Bot extends Table.Crons.TableGameBot {
         const botMaxBet = gameConfigs.bot_maxbet;
         const maxBet = Math.min(maxBetPerChoice, botMaxBet);
 
-        if (this.playerBankerOpts.includes(choice) || this.bigSmallOpts.includes(choice)) {
+        if (this.dragonTigerOpts.includes(choice) || this.dragonColorOpts.includes(choice) || this.tigerColorOpts.includes(choice)) {
             const isSmallTicket = this.totalTickets === 0 ? true : (this.smallTickets * 100) / this.totalTickets < this.smallTicketRatio;
             const maxBetOfSmallTicket = Math.min(minBet * 50, botMaxBet * 0.3);
             return isSmallTicket ? maxBetOfSmallTicket : maxBet;

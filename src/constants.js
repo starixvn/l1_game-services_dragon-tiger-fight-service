@@ -1,5 +1,5 @@
 const constants = {
-    choiceNames: { tie: "tie", player: "player", banker: "banker" },
+    choiceNames: { tie: "tie", dragon: "dragon", tiger: "tiger" },
 };
 
 export default constants;

@@ -1,6 +1,6 @@
 import awilix from "awilix";
 import { Table } from "sc-game-base";
-import { SettleGameRoundConsumer, RoundResultConsumer, PlaceBetConsumer } from "./consumers";
+import { SettleGameRoundConsumer, PlaceBetConsumer } from "./consumers";
 import { bets, rounds, tmpBets, results } from "./models/index";
 import { Bot } from "./crons/index";
 import RoundQuery from "./query-apis/round-query";
@@ -25,7 +25,6 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
         this.container.register({
             placeBetConsumer: asClass(PlaceBetConsumer).singleton(),
             settleGameRoundConsumer: asClass(SettleGameRoundConsumer).singleton().proxy(),
-            roundResultConsumer: asClass(RoundResultConsumer).singleton(),
         });
     }
 

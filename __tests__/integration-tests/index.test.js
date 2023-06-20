@@ -28,6 +28,6 @@ afterAll(() => {
 
 signinTest();
 ingameTest();
-//getHistoryTest();
-//placeBetTest();
-//settleTest();
+getHistoryTest();
+placeBetTest();
+settleTest();

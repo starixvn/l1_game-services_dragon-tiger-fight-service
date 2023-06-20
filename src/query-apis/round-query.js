@@ -30,8 +30,8 @@ export default class RoundQuery extends Core.QueryApis.RoundQuery {
 
     convertResult(round) {
         return {
-            player: round.player,
-            banker: round.banker,
+            dragon: round.dragon,
+            tiger: round.tiger,
         };
     }
 }

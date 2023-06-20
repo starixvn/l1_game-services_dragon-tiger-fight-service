@@ -10,9 +10,9 @@ export default class SettleGameRoundConsumer extends Table.EventConsumers.TableS
             .reduce(
                 (result, [choice, win]) => {
                     if (choice === constants.choiceNames.tie && win) {
-                        const playerBet = bet[constants.choiceNames.player] ?? 0;
-                        const bankerBet = bet[constants.choiceNames.banker] ?? 0;
-                        const refund = playerBet + bankerBet;
+                        const dragonBet = bet[constants.choiceNames.dragon] ?? 0;
+                        const tigerBet = bet[constants.choiceNames.tiger] ?? 0;
+                        const refund = (dragonBet + tigerBet)/2;
 
                         result.totalWin += refund;
                     }
@@ -54,8 +54,8 @@ export default class SettleGameRoundConsumer extends Table.EventConsumers.TableS
         const { roundId, exchangeRates } = this.gameData;
         const newRound = await this.roundsRepository.create({
             id: roundId,
-            player: result.player,
-            banker: result.banker,
+            dragon: result.dragon,
+            tiger: result.tiger,
             result: settlementResult,
             time: new Date(),
             exchangeRateId: exchangeRates.exId,

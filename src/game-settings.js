@@ -7,11 +7,12 @@ export default {
         lockingBet: 5,
         dealCards: 2,
     },
-    choices: ["player", "banker", "big", "small", "tie", "playerPair", "bankerPair"],
-    choicesMapper: { player: 1, banker: 2, big: 3, small: 4, tie: 5, playerPair: 6, bankerPair: 7 },
+    choices: ["dragon", "tiger", "tie", "blackDragon", "redDragon", "blackTiger", "redTiger"],
+    choicesMapper: { dragon: 1, tiger: 2, tie: 3, blackDragon: 4, redDragon: 5, blackTiger: 6, redTiger: 7 },
     hedgeBetGroups: [
-        ["player", "banker"],
-        ["big", "small"],
+        ["dragon", "tiger"],
+        ["blackDragon", "redDragon"],
+        ["blackTiger", "redTiger"],
     ],
     numberOfRoundHistory: 102,
 };
