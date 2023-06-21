@@ -1,19 +1,21 @@
 import { Core, Table } from "sc-game-base";
 import { initAPIStub, stubUserService } from "sc-game-service-integration-utils";
-
-import appConfigs from "../../../src/app-configs.IGT";
 import ContainerRegistry from "../../../src/container-registry";
-import gameSettings from "../../../src/game-settings";
-import { resultHelper } from "../../../src/helpers";
 
-export const run = async () => {
+import gameSettings from "./game-settings";
+import { generateResult, getSettlementResult, generateRawResultForHash } from "../../../src/helpers/result-helper";
+import { buildConfigs } from "./helper";
+
+export const run = async (processId, overrideConfigs) => {
+    const appConfigs = Object.assign({}, buildConfigs(processId), overrideConfigs);      
+
     initAPIStub(appConfigs.apiSettings.apiUrl);
     stubUserService(appConfigs)
     const definition = new Table.TableGameDefinition(
         gameSettings,
-        resultHelper.generateResult,
-        resultHelper.getSettlementResult,
-        resultHelper.generateRawResultForHash
+        generateResult,
+        getSettlementResult,
+        generateRawResultForHash
     );
     const gameData = new Table.TableGameData(gameSettings.durations.wholeRound);
 
@@ -23,4 +25,6 @@ export const run = async () => {
     await app.startGame(container);
 };
 
-run();
+const processId = process.argv[3];
+const overrideConfigs = JSON.parse(process.argv[4]);
+run(processId, overrideConfigs);
