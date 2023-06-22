@@ -3,7 +3,6 @@ import { Table } from "sc-game-base";
 import { SettleGameRoundConsumer, PlaceBetConsumer } from "./consumers";
 import { bets, rounds, tmpBets, results, betLogs } from "./models/index";
 import { Bot } from "./crons/index";
-import RoundQuery from "./query-apis/round-query";
 
 const { asClass, asValue } = awilix;
 
@@ -35,13 +34,5 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
         this.container.register({
             bot: asClass(Bot).singleton(),
         });
-    }
-
-    registerApis() {
-        super.registerApis();
-
-        this.container.register({
-            roundQuery: asClass(RoundQuery).singleton(),
-        });
-    }
+    }   
 }

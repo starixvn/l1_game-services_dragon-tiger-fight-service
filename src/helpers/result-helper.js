@@ -60,10 +60,10 @@ const settlementRuleEntries = Object.entries({
     dragon: (roundResult) => roundResult.dragon.card > roundResult.tiger.card,
     tiger: (roundResult) => roundResult.tiger.card > roundResult.dragon.card,
     tie: (roundResult) => roundResult.tiger.card === roundResult.dragon.card,
-    blackDragon: (roundResult) => ["♣", "♠"].includes(roundResult.dragon.type),
-    redDragon: (roundResult) => ["♥", "♦"].includes(roundResult.dragon.type),
-    blackTiger: (roundResult) => ["♣", "♠"].includes(roundResult.tiger.type),
-    redTiger: (roundResult) => ["♥", "♦"].includes(roundResult.tiger.type),
+    blackDragon: (roundResult) => ["♣", "♠"].includes(cardTypes[roundResult.dragon.type]),
+    redDragon: (roundResult) => ["♥", "♦"].includes(cardTypes[roundResult.dragon.type]),
+    blackTiger: (roundResult) => ["♣", "♠"].includes(cardTypes[roundResult.tiger.type]),
+    redTiger: (roundResult) => ["♥", "♦"].includes(cardTypes[roundResult.tiger.type]),
 });
 
 export const generateResult = (randomMode) => {

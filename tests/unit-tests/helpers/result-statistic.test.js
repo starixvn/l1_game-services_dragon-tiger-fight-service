@@ -7,21 +7,25 @@ describe("result statistic: 100,000 times", () => {
         it(`should generate results statistically correct with mode ${index + 1}`, () => {
             // arrange
             const statisticResult = {
-                player: 0,
-                banker: 0,
+                dragon: 0,
+                tiger: 0,
                 tie: 0,
-                big: 0,
-                small: 0,
+                blackDragon: 0,
+                redDragon: 0,
+                blackTiger: 0,
+                redTiger: 0,
             };
 
             // act
             for (let i = 0; i < total; i++) {
                 const settlementResult = getSettlementResult(generateResult(index + 1));
-                statisticResult.player += +settlementResult.player;
-                statisticResult.banker += +settlementResult.banker;
+                statisticResult.dragon += +settlementResult.dragon;
+                statisticResult.tiger += +settlementResult.tiger;
                 statisticResult.tie += +settlementResult.tie;
-                statisticResult.big += +settlementResult.big;
-                statisticResult.small += +settlementResult.small;
+                statisticResult.blackDragon += +settlementResult.blackDragon;
+                statisticResult.redDragon += +settlementResult.redDragon;
+                statisticResult.blackTiger += +settlementResult.blackTiger;
+                statisticResult.redTiger += +settlementResult.redTiger;
             }
 
             // assert
@@ -33,9 +37,15 @@ describe("result statistic: 100,000 times", () => {
             console.log(
                 `Mode:${index + 1}, countResult: ${JSON.stringify(statisticResult)}, percentageResult: ${JSON.stringify(resultPercentage)}`
             );
-            expect(resultPercentage.player).toBeGreaterThanOrEqual(44);
-            expect(resultPercentage.banker).toBeGreaterThanOrEqual(44);
+            expect(resultPercentage.dragon).toBeGreaterThanOrEqual(44);
+            expect(resultPercentage.tiger).toBeGreaterThanOrEqual(44);
             expect(resultPercentage.tie).toBeLessThanOrEqual(10);
+            expect(resultPercentage.blackDragon).toBeGreaterThanOrEqual(48);
+            expect(resultPercentage.redDragon).toBeGreaterThanOrEqual(48);
+            expect(resultPercentage.blackDragon  + resultPercentage.redDragon).toBe(100);            
+            expect(resultPercentage.blackTiger).toBeGreaterThanOrEqual(48);
+            expect(resultPercentage.redTiger).toBeGreaterThanOrEqual(48);
+            expect(resultPercentage.blackTiger  + resultPercentage.redTiger).toBe(100);
         });
     }
 });
