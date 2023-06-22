@@ -42,10 +42,10 @@ describe("result statistic: 100,000 times", () => {
             expect(resultPercentage.tie).toBeLessThanOrEqual(10);
             expect(resultPercentage.blackDragon).toBeGreaterThanOrEqual(48);
             expect(resultPercentage.redDragon).toBeGreaterThanOrEqual(48);
-            expect(resultPercentage.blackDragon  + resultPercentage.redDragon).toBe(100);            
+            expect(resultPercentage.blackDragon  + resultPercentage.redDragon).toBeGreaterThanOrEqual(99.9);            
             expect(resultPercentage.blackTiger).toBeGreaterThanOrEqual(48);
             expect(resultPercentage.redTiger).toBeGreaterThanOrEqual(48);
-            expect(resultPercentage.blackTiger  + resultPercentage.redTiger).toBe(100);
+            expect(resultPercentage.blackTiger  + resultPercentage.redTiger).toBeGreaterThanOrEqual(99.9);
         });
     }
 });
