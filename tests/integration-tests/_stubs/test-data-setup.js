@@ -11,8 +11,8 @@ import {
     normalUser,
 } from "sc-game-service-integration-utils";
 
-import { bets, rounds } from "../../../src/models";
-import { currencyData, game, gameConfig, roundsData, userBetData, promotions } from "./test-data";
+import { bets, rounds, betLogs } from "../../../src/models";
+import { currencyData, game, gameConfig, roundsData, userBetData, promotions, userBetLogData } from "./test-data";
 import { Core } from "sc-game-base";
 import { buildConfigs } from "./helper";
 
@@ -42,6 +42,7 @@ export const createTestData = async (processId) => {
     await createDummyUsers(currency);
     await createRounds();
     await createUserBetData();
+    await createUserBetLogData();
     await createPromotionData();
 
     console.log("Create exchange rate, game config & dummy user for testing successfully!");
@@ -61,6 +62,12 @@ const createUserBetData = async () => {
     const userId = await getUserId(normalUser.playerId);
     const betData = userBetData(userId);
     return bets.insertMany(betData);
+};
+
+const createUserBetLogData = async () => {
+    const userId = await getUserId(normalUser.playerId);
+    const betLogData = userBetLogData(userId);
+    return betLogs.insertMany(betLogData);
 };
 
 const createPromotionData = async () => {

@@ -1,7 +1,7 @@
 import awilix from "awilix";
 import { Table } from "sc-game-base";
 import { SettleGameRoundConsumer, PlaceBetConsumer } from "./consumers";
-import { bets, rounds, tmpBets, results } from "./models/index";
+import { bets, rounds, tmpBets, results, betLogs } from "./models/index";
 import { Bot } from "./crons/index";
 import RoundQuery from "./query-apis/round-query";
 
@@ -15,6 +15,7 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
             roundsRepository: asValue(rounds),
             betsRepository: asValue(bets),
             tempBetsRepository: asValue(tmpBets),
+            betLogsRepository: asValue(betLogs),
             resultsRepository: asValue(results),
         });
     }

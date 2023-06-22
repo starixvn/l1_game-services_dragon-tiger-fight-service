@@ -26,13 +26,13 @@ const bet = {
 };
 
 const bets = mongoose.model(
-    "dragontigerfight_bets",
+    "dragontigerfight_ones",
     new mongoose.Schema({
         ...bet,
         currency: { type: String },
         rate: { type: Number, required: true },
     })
 );
-const tmpBets = mongoose.model("dragontigerfight_tmpbets", new mongoose.Schema(bet));
+const tmpBets = mongoose.model("dragontigerfight_tmpones", new mongoose.Schema(bet));
 
 export { bets, tmpBets };

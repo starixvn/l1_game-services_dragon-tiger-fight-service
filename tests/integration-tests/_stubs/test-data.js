@@ -89,9 +89,27 @@ const userBetData = (uid) => {
             blackTiger: 0,
             redTiger: 0,
             siteId: "111",
-            roundId: 1190119,
+            roundId: 1190120,
             paid: true,
         },
+    ];
+};
+
+
+const userBetLogData = (uid) => {
+    return [
+        {
+            uid: uid,
+            currency: "$US",
+            playerId: 1,
+            name: "NormalUser",
+            operatorId: "dummy-operator-id",
+            rate: 1,
+            siteId: "111",
+            roundId: 1190120,
+            choice: "tie",
+            amount: 100
+        },        
     ];
 };
 
@@ -106,4 +124,4 @@ const promotions = [
     },
 ];
 
-export { game, currencyData, socketOptionsFunc, gameConfig, roundsData, userBetData, promotions };
+export { game, currencyData, socketOptionsFunc, gameConfig, roundsData, userBetData, promotions, userBetLogData };
