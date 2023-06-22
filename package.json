@@ -11,6 +11,7 @@
     "license": "ISC",
     "type": "module",
     "scripts": {
+        "dev-test": "jest",
         "test": "jest --testPathPattern=tests/unit-tests/",
         "test-coverage": "jest --collect-coverage --testPathPattern=tests/unit-tests/",
         "integration-test": "jest --testPathPattern=tests/integration-tests/",
@@ -26,11 +27,11 @@
     },
     "dependencies": {
         "chance": "^1.1.7",
+        "d3-array": "^3.2.0",
+        "lodash": "^4.17.19",
         "nodemon": "^2.0.4",
         "random": "^3.0.6",
         "random-js": "^2.1.0",
-        "d3-array": "^3.2.0",
-        "lodash": "^4.17.19",
         "sc-game-base": "3.3.0"
     },
     "resolutions": {

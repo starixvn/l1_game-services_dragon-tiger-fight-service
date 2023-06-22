@@ -84,5 +84,5 @@ export const getSettlementResult = (roundResult) => {
 };
 
 export const generateRawResultForHash = ({dragon, tiger}) => {
-    return `{${cardNames[dragon.card]}${cardTypes[dragon.type]}${cardNames[tiger.card]}${cardTypes[tiger.type]}}`;
+    return `{${cardNames[dragon.card]}${cardTypes[dragon.type]} ${cardNames[tiger.card]}${cardTypes[tiger.type]}}`;
 };

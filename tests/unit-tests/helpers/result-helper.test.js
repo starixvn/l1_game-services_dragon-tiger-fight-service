@@ -1,23 +1,16 @@
-import BaccaratPlayer from "../../../src/helpers/baccarat-player";
-import { generateResult, getSettlementResult, generateRawResultForHash, getCards } from "../../../src/helpers/result-helper";
-import {cards, cardNames, cardTypes} from "../../../src/helpers/card";
+import { generateResult, getSettlementResult, generateRawResultForHash } from "../../../src/helpers/result-helper";
 describe("result-helper test", () => {   
-
-    describe("generateRawResultForHash test", () => {
-        it("should return expected", () => {
+    describe("generateRawResultForHash", () => {
+        it("should return as expected", () => {
             // arrange
-            const cards = [
-                { card: 0, type: 0 },
-                { card: 10, type: 1 },
-                { card: 11, type: 2 },
-                { card: 12, type: 3 },
-                { card: 7, type: 1 },
-                { card: 9, type: 2 },
-            ];
-            const expected = "{A♥ J♦ Q♣ K♠ 8♦ 10♣}";
+            const roundResult = {
+                dragon: { card: 0, type: 0 },
+                tiger: { card: 10, type: 1 },                
+            };
+            const expected = "{A♥ J♦}";
 
             // act
-            const actual = generateRawResultForHash({ cards });
+            const actual = generateRawResultForHash(roundResult);
 
             // assert
             expect(actual).toBe(expected);

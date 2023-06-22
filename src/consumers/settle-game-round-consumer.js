@@ -17,7 +17,7 @@ export default class SettleGameRoundConsumer extends Table.EventConsumers.TableS
                         result.totalWin += refund;
                     }
 
-                    const betAmount = bet[choice];
+                    const betAmount = bet[choice] ?? 0;
                     const originalOdds = odds[choice] || 1;
                     const winAmount = win ? betAmount * originalOdds : 0;
 
@@ -46,32 +46,5 @@ export default class SettleGameRoundConsumer extends Table.EventConsumers.TableS
         betResult.netWin = parseFloat(betResult.netWin.toFixed(2));
 
         return betResult;
-    }
-
-    async settleRound() {
-        const result = this.generateResult();
-        const settlementResult = this.definition.settle(result);
-        const { roundId, exchangeRates } = this.gameData;
-        const newRound = await this.roundsRepository.create({
-            id: roundId,
-            dragon: result.dragon,
-            tiger: result.tiger,
-            result: settlementResult,
-            time: new Date(),
-            exchangeRateId: exchangeRates.exId,
-        });
-
-        if (newRound) {
-            const finish = {
-                settlementResult,
-                result,
-                roundId: newRound.id,
-                time: newRound.time,
-            };
-
-            this.gameData.roundId = finish.roundId + 1;
-
-            await this.settleBets(finish);
-        }
-    }
+    }    
 }
