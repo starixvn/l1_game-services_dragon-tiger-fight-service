@@ -1,5 +1,4 @@
 import { GameClientDriver, normalUser, eventTypes } from "sc-game-service-integration-utils";
-import gameSettings from "./_stubs/game-settings";
 import { startService } from "./_stubs/test-jobs";
 import {
     getProcessId,
