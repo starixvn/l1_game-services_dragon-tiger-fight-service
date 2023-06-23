@@ -6,18 +6,18 @@ import Bot from "../../../src/crons/bot";
 import gameSettings from "../../../src/game-settings";
 import appConfigs from "../../../src/app-configs";
 
-xdescribe("bot test", () => {
+describe("bot test", () => {
     const definition = new Table.TableGameDefinition(gameSettings);
     const gameData = new Table.TableGameData(0);
     gameData.gameConfigs = {
         choices_maxbet: {
-            player: 10000,
-            banker: 10000,
-            big: 500,
-            small: 500,
-            tie: 200,
-            playerPair: 200,
-            bankerPair: 200,
+            dragon: 10000,
+            tiger: 10000,
+            tie: 500,
+            blackDragon: 500,
+            redDragon: 200,
+            blackTiger: 200,
+            redTiger: 200,
         },
         minbet: 1,
         bot_maxbet: 2000,
@@ -40,53 +40,55 @@ xdescribe("bot test", () => {
         totalBet: 0,
     };
 
-    it("_inherit Table.Crons.TableGameBot", () => {
+    it("Inherit Table.Crons.TableGameBot", () => {
         expect(baccaratBot instanceof Table.Crons.TableGameBot).toBeTruthy();
     });
 
-    it("_resetAllBets_always_returns default values", () => {
-        baccaratBot.smallTickets = 10;
-
-        // act
-        baccaratBot.resetAllBets();
-
-        // assert
-        expect(baccaratBot.smallTickets).toEqual(0);
-    });
+    describe("resetAllBets", () => {
+        it("Returns default values", () => {
+            baccaratBot.smallTickets = 10;
+    
+            // act
+            baccaratBot.resetAllBets();
+    
+            // assert
+            expect(baccaratBot.smallTickets).toEqual(0);
+        });
+    })
 
     describe("getBetChoice", () => {
         beforeEach(() => {
             baccaratBot.resetAllBotData();
         });
 
-        it("should return player banker options when they are not reached", () => {
+        it("should return dragon tiger options when they are not reached", () => {
             baccaratBot.allBets = {
-                player: 400,
-                banker: 300,
-                big: 200,
-                small: 200,
-                tie: 100,
-                playerPair: 100,
-                bankerPair: 100,
+                dragon: 400,
+                tiger: 300,
+                tie: 200,
+                blackDragon: 200,
+                redDragon: 100,
+                blackTiger: 100,
+                redTiger: 100,
             };
 
             const choice = baccaratBot.getBetChoice(bot);
 
-            expect(baccaratBot.playerBankerOpts).toContain(choice);
+            expect(baccaratBot.dragonTigerOpts).toContain(choice);
         });
 
-        it("should return player banker options as default", () => {
+        it("should return dragon tiger options as default", () => {
             baccaratBot.resetAllBets();
 
             const choice = baccaratBot.getBetChoice(bot);
 
-            expect(baccaratBot.playerBankerOpts).toContain(choice);
+            expect(baccaratBot.dragonTigerOpts).toContain(choice);
         });
     });
 
-    describe("getMaxBet test", () => {
+    describe("getMaxBet", () => {
         it("should return value between min and max bet config", () => {
-            const choice = "player";
+            const choice = "dragon";
             const { bot_maxbet, minbet, choices_maxbet } = gameData.gameConfigs;
             const maxBet = Math.min(bot_maxbet, choices_maxbet[choice]);
 
@@ -96,26 +98,102 @@ xdescribe("bot test", () => {
         });
     });
 
-    it("updateBotInRoomData_always_calls super.updateBotInRoomData", () => {
-        spyOn(Table.Crons.TableGameBot.prototype, "updateBotInRoomData");
+    describe("updateBotInRoomData", () => {
+        it("calls super.updateBotInRoomData", () => {
+            // arrange
+            spyOn(Table.Crons.TableGameBot.prototype, "updateBotInRoomData");
+    
+            // act
+            baccaratBot.updateBotInRoomData(bot, "dragon", 10, 100);
+    
+            // assert
+            expect(Table.Crons.TableGameBot.prototype.updateBotInRoomData).toHaveBeenCalled();
+        });
+    })    
 
-        // act
-        baccaratBot.updateBotInRoomData(bot, "player", 10, 100);
+    describe("resetAllBotData", () => {
+        it("Calls specific functions", () => {
+            // arrange
+            spyOn(Table.Crons.TableGameBot.prototype, "resetAllBotData");
+            spyOn(baccaratBot, "resetAllBets");
+    
+            // act
+            baccaratBot.resetAllBotData();
+    
+            // assert
+            expect(Table.Crons.TableGameBot.prototype.resetAllBotData).toHaveBeenCalled();
+            expect(baccaratBot.resetAllBets).toHaveBeenCalled();
+        });
+    })
+   
+    describe("shouldAddBot", () => {
+        it("should add bot when botsInRoom < maxNumberOfBots and random is inOutValues", () => {
+            // arrange
+            baccaratBot.botsInRoom = {"1": {}, "2": {}};
+            baccaratBot.maxNumberOfBots = 3;
+    
+            // act
+            const result = baccaratBot.shouldAddBot(3);
+    
+            // assert
+            expect(result).toBe(true);
+        })
 
-        // assert
-        expect(Table.Crons.TableGameBot.prototype.updateBotInRoomData).toHaveBeenCalled();
-    });
+        it("should NOT add bot when botsInRoom >= maxNumberOfBots", () => {
+            // arrange
+            baccaratBot.botsInRoom = {"1": {}, "2": {}};
+            baccaratBot.maxNumberOfBots = 2;
+    
+            // act
+            const result = baccaratBot.shouldAddBot(3);
+    
+            // assert
+            expect(result).toBe(false);
+        })
 
-    it("_resetAllBotData_always_calls specific functions", () => {
-        // arrange
-        spyOn(Table.Crons.TableGameBot.prototype, "resetAllBotData");
-        spyOn(baccaratBot, "resetAllBets");
+        it("should NOT add bot when random is not inOutValues", () => {
+            // arrange
+            baccaratBot.botsInRoom = {"1": {}, "2": {}};
+            baccaratBot.maxNumberOfBots = 3;
+    
+            // act
+            const result = baccaratBot.shouldAddBot(4);
+    
+            // assert
+            expect(result).toBe(false);
+        })
+    })
 
-        // act
-        baccaratBot.resetAllBotData();
+    describe("getBotsToBet", () => {
+        it("when botsToBet < max numberBotsToBet - return all botsToBet", () => {
+             // arrange
+             baccaratBot.botsInRoom = {"1": {totalBet: 10, remainTickets: 2}, "2": {totalBet: 11, remainTickets: 2}};
+     
+             // act
+             const result = baccaratBot.getBotsToBet();
+     
+             // assert
+             expect(result.length).toBe(2);
+        })
 
-        // assert
-        expect(Table.Crons.TableGameBot.prototype.resetAllBotData).toHaveBeenCalled();
-        expect(baccaratBot.resetAllBets).toHaveBeenCalled();
-    });
+        it("when botsToBet > max numberBotsToBet - return max numberBotsToBet", () => {
+            // arrange
+            baccaratBot.botsInRoom = {
+                "1": {totalBet: 10, remainTickets: 2}, 
+                "2": {totalBet: 11, remainTickets: 2},  
+                "3": {totalBet: 11, remainTickets: 2},  
+                "4": {totalBet: 11, remainTickets: 2},
+                "5": {totalBet: 11, remainTickets: 2},
+                "6": {totalBet: 11, remainTickets: 2},
+                "7": {totalBet: 11, remainTickets: 2}
+            };
+            baccaratBot.gameData.remainingTime = 10;
+    
+            // act
+            const result = baccaratBot.getBotsToBet();
+    
+            // assert
+            expect(result.length).toBe(5);
+       })
+    })
 });

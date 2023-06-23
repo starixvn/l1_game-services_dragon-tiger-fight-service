@@ -22,6 +22,10 @@ const gameConfig = {
     maxBet: 3000,
     maxBetPerChoices: { dragon: 3000, tiger: 3000, tie: 3000, blackDragon: 3000, redDragon: 3000, blackTiger: 3000, redTiger: 3000 },
     odds: { dragon: 1.97, tiger: 1.97, tie: 3.76, blackDragon: 3.76, redDragon: 14.5, blackTiger: 14.5, redTiger: 2.5 },
+    botenabled: true,
+    hour_maxbot: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    bot_maxbet: 1000,
+    choices_maxbet: { player: 10000, banker: 10000, big: 10000, small: 10000, tie: 10000, playerPair: 10000, bankerPair: 10000 },
 };
 
 const roundsData = [

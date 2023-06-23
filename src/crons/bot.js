@@ -1,5 +1,6 @@
 import { helpers } from "sc-common";
 import { Table } from "sc-game-base";
+import constants from "../constants";
 
 export default class Bot extends Table.Crons.TableGameBot {
     constructor(definition, gameData, publisher, userInfosRepository, tempBetsRepository, appConfigs) {
@@ -39,9 +40,9 @@ export default class Bot extends Table.Crons.TableGameBot {
 
         const betChoiceRatios = [
             {
-                group: this.dragonColorOpts,
+                group: this.dragonTigerOpts,
                 underBetRatio:
-                    (this.getTotalAmountOnChoiceGroup(this.dragonColorOpts) * 100) / totalBotBet < this.betChoiceRatio.DragonTiger,
+                    (this.getTotalAmountOnChoiceGroup(this.dragonTigerOpts) * 100) / totalBotBet < this.betChoiceRatio.DragonTiger,
             },
             {
                 group: this.dragonColorOpts,
@@ -63,8 +64,8 @@ export default class Bot extends Table.Crons.TableGameBot {
 
         const choice =
             underRatioGroups.length > 0
-                ? this.getRandomChoiceFromGroup(underRatioGroups[0].group)
-                : this.getRandomChoiceFromGroup(this.dragonTigerOpts);
+                ? this.chance.pickone(underRatioGroups[0].group)
+                : this.chance.pickone(this.dragonTigerOpts);
     
         const hedgeBetGroup = this.hedgeBetGroups.find(group => group.includes(choice));
         if(hedgeBetGroup){
@@ -90,11 +91,7 @@ export default class Bot extends Table.Crons.TableGameBot {
         }
 
         return Math.min(minBet * 10, maxBet * 0.2);
-    }
-
-    getRandomChoiceFromGroup(group) {
-        return this.chance.pickone(group);
-    }
+    }    
 
     getTotalAmountOnChoiceGroup(choices) {
         let total = 0;
@@ -115,22 +112,35 @@ export default class Bot extends Table.Crons.TableGameBot {
         this.definition.choices.forEach((choice) => (total += this.allBets[choice]));
 
         return total;
-    }
-
-    isSmallTicket(amount) {
-        return amount <= this.getMinBet() * 50;
-    }
+    }   
 
     updateBotInRoomData(bot, choice, amount, balance) {
         super.updateBotInRoomData(bot, choice, amount, balance);
 
         this.allBets[choice] = this.allBets[choice] ? this.allBets[choice] + amount : amount;
-        this.smallTickets += this.isSmallTicket(amount) ? 1 : 0;
+        this.smallTickets += (amount <= this.getMinBet() * 50) ? 1 : 0;
     }
 
     convertAmountToChip(amount) {
-        const chipList = this.appConfigs.chips.filter((chip) => amount / chip >= 1);
+        const chipList = constants.chips.filter((chip) => amount / chip >= 1);
 
         return chipList.length > 0 ? chipList[0] : this.getMinBet();
+    }
+
+    getBotsToBet() {
+        const maxTickets = Math.floor(Object.keys(this.botsInRoom).length / this.gameData.remainingTime) + 5;
+        const numberBotsToBet = this.chance.integer({ min: 5, max: maxTickets });
+
+        let botsToBet = Object.values(this.botsInRoom).filter(
+            (t) => t.totalBet < this.gameData.gameConfigs.bot_maxbet && t.remainTickets > 0
+        );
+
+        botsToBet = this.chance.shuffle(botsToBet);
+
+        return botsToBet.slice(0, Math.min(numberBotsToBet, botsToBet.length));
+    }
+
+    shouldAddBot(random) {
+        return random === this.inOutValues.in && Object.keys(this.botsInRoom).length < this.maxNumberOfBots;
     }
 }
