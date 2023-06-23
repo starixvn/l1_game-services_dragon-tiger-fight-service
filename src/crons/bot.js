@@ -66,15 +66,15 @@ export default class Bot extends Table.Crons.TableGameBot {
             underRatioGroups.length > 0
                 ? this.chance.pickone(underRatioGroups[0].group)
                 : this.chance.pickone(this.dragonTigerOpts);
-    
+
         const hedgeBetGroup = this.hedgeBetGroups.find(group => group.includes(choice));
         if(hedgeBetGroup){
             const oppositeChoice = choice === hedgeBetGroup[0] ? hedgeBetGroup[1] : hedgeBetGroup[0];
-            return bot.choices.includes(oppositeChoice) ? oppositeChoice : choice;            
+            return bot.choices.includes(oppositeChoice) ? oppositeChoice : choice;
         }
         else{
             return choice;
-        }        
+        }
     }
 
     getMaxBet(bot, choice) {
@@ -91,7 +91,7 @@ export default class Bot extends Table.Crons.TableGameBot {
         }
 
         return Math.min(minBet * 10, maxBet * 0.2);
-    }    
+    }
 
     getTotalAmountOnChoiceGroup(choices) {
         let total = 0;
@@ -112,7 +112,7 @@ export default class Bot extends Table.Crons.TableGameBot {
         this.definition.choices.forEach((choice) => (total += this.allBets[choice]));
 
         return total;
-    }   
+    }
 
     updateBotInRoomData(bot, choice, amount, balance) {
         super.updateBotInRoomData(bot, choice, amount, balance);

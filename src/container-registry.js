@@ -34,5 +34,5 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
         this.container.register({
             bot: asClass(Bot).singleton(),
         });
-    }   
+    }
 }

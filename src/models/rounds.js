@@ -24,7 +24,7 @@ const settlementResultSchema = new mongoose.Schema(
         blackDragon: { type: Boolean, default: false },
         redDragon: { type: Boolean, default: false },
         blackTiger: { type: Boolean, default: false },
-        redTiger: { type: Boolean, default: false },        
+        redTiger: { type: Boolean, default: false },
     },
     { _id: false }
 );
