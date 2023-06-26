@@ -43,7 +43,7 @@ export default {
     },
     sentry: {
         sentryUrl: "",
-        logIdentifier: "baccarat",
+        logIdentifier: "DragonTigerFight",
         env: "DEV",
     },
     adminSecretKey: "asWDEerfOIdgsdqRTFabvmgh",

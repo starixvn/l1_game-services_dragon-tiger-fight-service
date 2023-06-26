@@ -22,7 +22,7 @@ export default {
     },
     enabledLogs: true,
     database: {
-        url: "mongodb://lmn_backend:LmnBackend%4022027@10.99.99.187:37201/?replicaSet=SabaL2UAT&appName=Baccarat",
+        url: "mongodb://lmn_backend:LmnBackend%4022027@10.99.99.187:37201/?replicaSet=SabaL2UAT&appName=DragonTigerFight",
         options: {
             dbName: "minigame",
             useNewUrlParser: true,
@@ -32,7 +32,7 @@ export default {
     },
     sentry: {
         sentryUrl: "http://8ac47fca6d3e4a41908896a64ef201ac@10.2.190.51:9009/53",
-        logIdentifier: "baccarat",
+        logIdentifier: "DragonTigerFight",
         env: "UAT",
     },
     authenticateSettings: {
