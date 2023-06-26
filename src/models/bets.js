@@ -11,6 +11,7 @@ const bet = {
     redDragon: { type: Number, default: 0 },
     blackTiger: { type: Number, default: 0 },
     redTiger: { type: Number, default: 0 },
+    totalAmount: { type: Number, default: 0 },
 
     betwin: { type: Number, default: 0 },
     time: { type: Date },
@@ -22,7 +23,7 @@ const bet = {
     playerId: { type: Number },
     operatorId: { type: String },
     roundId: { type: Number, default: 0, required: true },
-    paid: { type: Boolean, default: false },
+    paid: { type: Boolean, default: false },    
 };
 
 const bets = mongoose.model(

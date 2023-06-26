@@ -12,10 +12,11 @@ import {
 import { socketOptionsFunc } from "./_stubs/test-data";
 const path = require("path");
 
-const overrideConfigs = { enabledBoostedOdds: false };
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-startService(processId, overrideConfigs);
+const overrideGameConfigs = {botenabled: false};
+const overrideAppConfigs = { enabledBoostedOdds: false };
+startService(processId, overrideGameConfigs, overrideAppConfigs);
 
 const appConfigs = buildConfigs(processId);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);

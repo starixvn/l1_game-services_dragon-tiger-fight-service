@@ -1,12 +1,12 @@
 import { spawn } from "child_process";
 
-export const startSetupDataProcess = (processId, overrideConfigs, onSetupDataDone) => {
+export const startSetupDataProcess = (processId, overrideGameConfigs, onSetupDataDone) => {
     const setupDataProcess = spawn("node", [
         "--es-module-specifier-resolution=node",
         "./tests/integration-tests/_stubs/test-data-setup.js",
         "-pid",
         `${processId}`,
-        `${JSON.stringify(overrideConfigs)}`,
+        `${JSON.stringify(overrideGameConfigs)}`,
     ]);
 
     setupDataProcess.stdout.on("data", (data) => {
@@ -25,13 +25,13 @@ export const startSetupDataProcess = (processId, overrideConfigs, onSetupDataDon
     return setupDataProcess;
 };
 
-export const startServiceProcess = (processId, overrideConfigs, onServiceStarted) => {
+export const startServiceProcess = (processId, overrideAppConfigs, onServiceStarted) => {
     const serviceProcess = spawn("node", [
         "--es-module-specifier-resolution=node",
         "./tests/integration-tests/_stubs/game-service-app.js",
         "-pid",
         `${processId}`,
-        `${JSON.stringify(overrideConfigs)}`,
+        `${JSON.stringify(overrideAppConfigs)}`,
         {
             stdio: ["pipe", "pipe", "pipe", "ipc"],
         },
@@ -52,14 +52,14 @@ export const startServiceProcess = (processId, overrideConfigs, onServiceStarted
     return serviceProcess;
 };
 
-export const startService = (processId, overrideConfigs = {}) => {
+export const startService = (processId, overrideGameConfigs = {}, overrideAppConfigs = {}) => {
     let processStartService;
     const JEST_ASSERT_WAITING_RESPONSE_TIMEOUT = 50000;
     beforeAll((done) => {
         jest.setTimeout(JEST_ASSERT_WAITING_RESPONSE_TIMEOUT);
-        startSetupDataProcess(processId, overrideConfigs, () => {
+        startSetupDataProcess(processId, overrideGameConfigs, () => {
             console.log("done setup db");
-            processStartService = startServiceProcess(processId, overrideConfigs, () => {
+            processStartService = startServiceProcess(processId, overrideAppConfigs, () => {
                 console.log("start tests");
                 done();
             });

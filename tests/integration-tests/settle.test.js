@@ -7,7 +7,8 @@ const path = require("path");
 
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-startService(processId);
+const overrideGameConfigs = {botenabled: false};
+startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);

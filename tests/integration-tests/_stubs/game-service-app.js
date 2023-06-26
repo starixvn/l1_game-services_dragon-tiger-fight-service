@@ -6,8 +6,8 @@ import gameSettings from "./game-settings";
 import { generateResult, getSettlementResult, generateRawResultForHash } from "../../../src/helpers/result-helper";
 import { buildConfigs } from "./helper";
 
-export const run = async (processId, overrideConfigs) => {
-    const appConfigs = Object.assign({}, buildConfigs(processId), overrideConfigs);      
+export const run = async (processId, overrideAppConfigs) => {
+    const appConfigs = Object.assign({}, buildConfigs(processId), overrideAppConfigs);      
 
     initAPIStub(appConfigs.apiSettings.apiUrl);
     stubUserService(appConfigs)
@@ -26,5 +26,5 @@ export const run = async (processId, overrideConfigs) => {
 };
 
 const processId = process.argv[3];
-const overrideConfigs = JSON.parse(process.argv[4]);
-run(processId, overrideConfigs);
+const overrideAppConfigs = JSON.parse(process.argv[4]);
+run(processId, overrideAppConfigs);

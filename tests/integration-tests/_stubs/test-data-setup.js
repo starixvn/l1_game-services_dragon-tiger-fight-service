@@ -31,14 +31,15 @@ const clearAllData = async () => {
     }
 };
 
-export const createTestData = async (processId) => {
+export const createTestData = async (processId, overrideGameConfigs) => {
+    const finalGameConfig = Object.assign({}, gameConfig, overrideGameConfigs);      
     await connectDatabase(processId);
     await createExchangeRate();
-    await createGameConfig(gameConfig);
+    await createGameConfig(finalGameConfig);
     const partnerConfig = await createPartnerConfig(game.id);
 
     const currency = await createDummyCurrency(partnerConfig.partnerId, currencyData.code, currencyData.name);
-    await createCurrencyGroupGames(currency.groupId, game.id, gameConfig);
+    await createCurrencyGroupGames(currency.groupId, game.id, finalGameConfig);
     await createDummyUsers(currency);
     await createRounds();
     await createUserBetData();
@@ -76,4 +77,5 @@ const createPromotionData = async () => {
 };
 
 const processId = process.argv[3];
-createTestData(processId);
+const overrideGameConfigs = JSON.parse(process.argv[4]);
+createTestData(processId, overrideGameConfigs);

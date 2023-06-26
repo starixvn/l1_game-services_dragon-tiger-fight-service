@@ -14,9 +14,11 @@ const path = require("path");
 
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-startService(processId);
+const overrideGameConfigs = {botenabled: false};
+startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
+console.log("appConfigs ", appConfigs);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);
 
 describe("place bet", () => {
@@ -38,18 +40,19 @@ describe("place bet", () => {
                 if (inGameData.remainingTime && !receivedRemainingTime) {
                     receivedRemainingTime = true;
                     setTimeout(() => {
-                        client.emit(eventTypes.bet, { betChoice: "dragon", amount: 100 });
+                        client.emit(eventTypes.bet, { betChoice: "dragon", amount: 101 });
                     }, getTimeOutToPlacingBetTime(inGameData.remainingTime, gameSettings.durations) * 1000);
                 }
             });
 
             // Assert
             client.on(socketOptions.gameName, (data) => {
+                console.log("data ", data);
                 if (data.endBet) {
                     expect(data.betChoice).toBe("dragon");
-                    expect(data.endBet).toBe(100);
-                    expect(data.ownBets).toEqual({ dragon: 100 });
-                    expect(data.ownChip).toEqual({ betChoice: "dragon", amount: 100 });
+                    expect(data.endBet).toBe(101);
+                    expect(data.ownBets).toEqual({ dragon: 101 });
+                    expect(data.ownChip).toEqual({ betChoice: "dragon", amount: 101 });
 
                     client.close();
                     done();

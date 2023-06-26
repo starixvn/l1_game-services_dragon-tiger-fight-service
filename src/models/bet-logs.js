@@ -4,8 +4,17 @@ const Schema = new mongoose.Schema({
     uid: { type: String, required: true },
     name: { type: String, required: true },
 
-    choice: { type: String, required: true },
-    amount: { type: Number, required: true },
+    dragon: { type: Number, default: 0 },
+    tiger: { type: Number, default: 0 },
+    tie: { type: Number, default: 0 },
+    blackDragon: { type: Number, default: 0 },
+    redDragon: { type: Number, default: 0 },
+    blackTiger: { type: Number, default: 0 },
+    redTiger: { type: Number, default: 0 },
+
+    rebet: { type: Boolean, default: false },
+    clientSentTime: { type: Date },
+    receivedTime: { type: Date },
 
     time: { type: Date },
 

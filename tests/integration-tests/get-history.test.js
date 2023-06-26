@@ -6,7 +6,8 @@ const path = require("path");
 
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-startService(processId);
+const overrideGameConfigs = {botenabled: false};
+startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);
@@ -24,7 +25,7 @@ describe("when get history", () => {
         });
         const expectedData = [
             {
-                dragon: 0,
+                dragon: 10,
                 tiger: 0,
                 tie: 100,
                 blackDragon: 0,
@@ -39,11 +40,13 @@ describe("when get history", () => {
                 betLogDetails: [{"choice":"tie","amount":100}],
                 roundId: 1190120,
                 phien: 1190120,
+                rebet: false,
+                totalAmount: 110
             },
             {
-                dragon: 100,
+                dragon: 102,
                 tiger: 0,
-                tie: 0,
+                tie: 12,
                 blackDragon: 0,
                 redDragon: 0,
                 blackTiger: 0,
@@ -56,6 +59,8 @@ describe("when get history", () => {
                 betLogDetails: [],
                 roundId: 1190119,
                 phien: 1190119,
+                rebet: false,
+                totalAmount: 114
             },
         ];
 
@@ -74,6 +79,7 @@ describe("when get history", () => {
                                 return betLog;
                             });
 
+                            console.log("actualBetLogs ", actualBetLogs)
                             expect(actualBetLogs).toEqual(expectedData);
                             expect(data.history.total).toBeGreaterThan(0);
                             expect(data.history.page).toBe(1);
@@ -88,3 +94,4 @@ describe("when get history", () => {
         });
     });
 });
+;
