@@ -15,7 +15,6 @@ const resultSchema = new mongoose.Schema(
     { _id: false }
 );
 
-
 const settlementResultSchema = new mongoose.Schema(
     {
         dragon: { type: Boolean, default: false },

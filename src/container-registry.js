@@ -50,7 +50,7 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
         super.registerApis();
 
         this.container.register({
-            historyQuery: asClass(HistoryQuery).singleton(),            
+            historyQuery: asClass(HistoryQuery).singleton(),
         });
     }
 
