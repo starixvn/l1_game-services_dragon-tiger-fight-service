@@ -32,15 +32,13 @@ describe("when get history", () => {
                 redDragon: 0,
                 blackTiger: 0,
                 redTiger: 0,
-                betwin: 0,
                 freeBet: false,
                 name: "NormalUser",
                 odds: { dragon: 1.97, tiger: 1.97, tie: 3.76, blackDragon: 3.76, redDragon: 14.5, blackTiger: 14.5, redTiger: 2.5 },
                 rate: 1,
-                betLogDetails: [{"choice":"tie","amount":100}],
+                betLogDetails: [{tie: 100, dragon: 0, tiger: 0, blackDragon: 0, redDragon: 0, blackTiger: 0, redTiger: 0, rebet: false, rate: 1, roundId: 1190120}],
                 roundId: 1190120,
                 phien: 1190120,
-                rebet: false,
                 totalAmount: 110
             },
             {
@@ -51,7 +49,6 @@ describe("when get history", () => {
                 redDragon: 0,
                 blackTiger: 0,
                 redTiger: 0,
-                betwin: 0,
                 freeBet: false,
                 name: "NormalUser",
                 odds: { dragon: 1.97, tiger: 1.97, tie: 3.76, blackDragon: 3.76, redDragon: 14.5, blackTiger: 14.5, redTiger: 2.5 },
@@ -59,7 +56,6 @@ describe("when get history", () => {
                 betLogDetails: [],
                 roundId: 1190119,
                 phien: 1190119,
-                rebet: false,
                 totalAmount: 114
             },
         ];
@@ -76,10 +72,10 @@ describe("when get history", () => {
                             const actualBetLogs = data.history.betLogs.map((betLog) => {
                                 delete betLog.result;
                                 delete betLog.settlementResult;
+                                delete betLog.betwin;
                                 return betLog;
                             });
 
-                            console.log("actualBetLogs ", actualBetLogs)
                             expect(actualBetLogs).toEqual(expectedData);
                             expect(data.history.total).toBeGreaterThan(0);
                             expect(data.history.page).toBe(1);

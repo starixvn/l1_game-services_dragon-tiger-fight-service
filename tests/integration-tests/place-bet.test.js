@@ -18,7 +18,6 @@ const overrideGameConfigs = {botenabled: false};
 startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
-console.log("appConfigs ", appConfigs);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);
 
 describe("place bet", () => {
@@ -47,7 +46,6 @@ describe("place bet", () => {
 
             // Assert
             client.on(socketOptions.gameName, (data) => {
-                console.log("data ", data);
                 if (data.endBet) {
                     expect(data.betChoice).toBe("dragon");
                     expect(data.endBet).toBe(101);

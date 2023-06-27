@@ -111,8 +111,13 @@ const userBetLogData = (uid) => {
             rate: 1,
             siteId: "111",
             roundId: 1190120,
-            choice: "tie",
-            amount: 100
+            dragon: 0,
+            tiger: 0,
+            tie: 100,
+            blackDragon: 0,
+            redDragon: 0,
+            blackTiger: 0,
+            redTiger: 0,
         },        
     ];
 };

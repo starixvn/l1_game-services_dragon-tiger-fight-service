@@ -4,6 +4,7 @@ import { SettleGameRoundConsumer, PlaceBetConsumer } from "./consumers";
 import { bets, rounds, tmpBets, results, betLogs } from "./models/index";
 import { Bot } from "./crons/index";
 import { RebetContainerRegistry } from "sc-rebet-mode";
+import HistoryQuery from "./query-apis/history-query";
 
 const { asClass, asValue } = awilix;
 
@@ -44,4 +45,13 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
             bot: asClass(Bot).singleton(),
         });
     }
+
+    registerApis() {
+        super.registerApis();
+
+        this.container.register({
+            historyQuery: asClass(HistoryQuery).singleton(),            
+        });
+    }
+
 }
