@@ -2,15 +2,10 @@ import mongoose from "mongoose";
 
 const modelName = "dragontigerfight_rounds";
 
-const card = {
-    card: Number,
-    type: Number,
-};
-
 const resultSchema = new mongoose.Schema(
     {
-        dragon: { type: card },
-        tiger: { type: card },
+        dragon: { type: Object },
+        tiger: { type: Object },
     },
     { _id: false }
 );
