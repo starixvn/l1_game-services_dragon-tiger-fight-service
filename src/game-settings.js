@@ -2,7 +2,7 @@ export default {
     id: 67,
     name: "DragonTigerFight",
     durations: {
-        wholeRound: 41,
+        wholeRound: 39,
         placingBets: 30,
         lockingBet: 5,
         dealCards: 2,
