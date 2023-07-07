@@ -8896,10 +8896,10 @@ sc-game-service-integration-utils@1.3.4-beta.1:
     sc-game-base "3.1.1"
     socket.io-client "^4.4.0"
 
-sc-rebet-mode@1.0.2:
-  version "1.0.2"
-  resolved "http://npm.lumigame.com/sc-rebet-mode/-/sc-rebet-mode-1.0.2.tgz#e46d1b69bfb5cbaf18a0327abaa03e84505909ef"
-  integrity sha512-iPWTOPn1YPmO7Jjs4kPR1/W2IecgrGj1ALJnJ31b0pk7sMF4RhKbiCNb4bst5eRA7FT3Qg5ROV++hTuTjnYaNQ==
+sc-rebet-mode@1.0.3-beta.1:
+  version "1.0.3-beta.1"
+  resolved "http://npm.lumigame.com/sc-rebet-mode/-/sc-rebet-mode-1.0.3-beta.1.tgz#874f35895a0e1ff66710a59571f51d5f30ab4e02"
+  integrity sha512-tjq07vICDWSO1pIj+AFRjQAzuqTSe92jHpUssQ179po+crHvCwY+yIlZ57LrQ/+CSSec5h9vPgunWfNSWfumIA==
   dependencies:
     awilix "^4.3.4"
     chance "^1.1.7"

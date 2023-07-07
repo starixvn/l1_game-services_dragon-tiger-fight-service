@@ -4,13 +4,8 @@ const Schema = new mongoose.Schema({
     uid: { type: String, required: true },
     name: { type: String, required: true },
 
-    dragon: { type: Number, default: 0 },
-    tiger: { type: Number, default: 0 },
-    tie: { type: Number, default: 0 },
-    blackDragon: { type: Number, default: 0 },
-    redDragon: { type: Number, default: 0 },
-    blackTiger: { type: Number, default: 0 },
-    redTiger: { type: Number, default: 0 },
+    choice: { type: String },
+    amount: { type: Number, default: 0, required: true },
 
     rebet: { type: Boolean, default: false },
     clientSentTime: { type: Date },

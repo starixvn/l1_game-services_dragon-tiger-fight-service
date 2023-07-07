@@ -14,7 +14,7 @@
         "dev-test": "jest",
         "test": "jest --testPathPattern=tests/unit-tests/",
         "test-coverage": "jest --collect-coverage --testPathPattern=tests/unit-tests/",
-        "integration-test": "jest --testPathPattern=tests/integration-tests/",
+        "integration-test": "jest --testPathPattern=tests/integration-tests",
         "dev": "nodemon --es-module-specifier-resolution=node --watch ./src ./src/app.js",
         "debug": "nodemon --es-module-specifier-resolution=node --watch ./ --inspect ./src/app.js",
         "prod": "node --max-old-space-size=8192 --es-module-specifier-resolution=node ./src/app.js",
@@ -33,7 +33,7 @@
         "random": "^3.0.6",
         "random-js": "^2.1.0",
         "sc-game-base": "4.0.0",
-        "sc-rebet-mode": "1.0.2"
+        "sc-rebet-mode": "1.0.3-beta.1"
     },
     "resolutions": {
         "sc-game-base": "4.0.0"
