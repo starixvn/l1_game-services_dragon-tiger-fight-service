@@ -31,19 +31,19 @@ const gameConfig = {
 const roundsData = [
     {
         id: 1190119,
-        result: { dragon: {card: 2, type: 1}, tiger: {card: 3, type: 2} },
+        result: { dragon: {rank: 2, suit: 1}, tiger: {rank: 3, suit: 2} },
         settlementResult: { dragon: true, tiger: false, tie: false, blackDragon: false, redDragon: true, blackTiger: true, redTiger: false},
         exchangeRateId: 1,
     },
     {
         id: 1190118,
-        result: { dragon: {card: 2, type: 1}, tiger: {card: 3, type: 2} },
+        result: { dragon: {rank: 2, suit: 1}, tiger: {rank: 3, suit: 2} },
         settlementResult: { dragon: true, tiger: false, tie: false, blackDragon: false, redDragon: true, blackTiger: true, redTiger: false},
         exchangeRateId: 1,
     },
     {
         id: 1190117,
-        result: { dragon: {card: 2, type: 1}, tiger: {card: 3, type: 2} },
+        result: { dragon: {rank: 2, suit: 1}, tiger: {rank: 3, suit: 2} },
         settlementResult: { dragon: true, tiger: false, tie: false, blackDragon: false, redDragon: true, blackTiger: true, redTiger: false},
         exchangeRateId: 1,
     },

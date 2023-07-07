@@ -4,8 +4,8 @@ describe("result-helper test", () => {
         it("should return as expected", () => {
             // arrange
             const roundResult = {
-                dragon: { card: 0, type: 0 },
-                tiger: { card: 10, type: 1 },                
+                dragon: { rank: 0, suit: 0 },
+                tiger: { rank: 10, suit: 1 },                
             };
             const expected = "{A♥ J♦}";
 

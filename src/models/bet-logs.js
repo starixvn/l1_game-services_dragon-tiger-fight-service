@@ -28,4 +28,4 @@ const Schema = new mongoose.Schema({
     roundId: { type: Number, default: 0, required: true },
 });
 
-export default mongoose.model("dragontigerfight_bets", Schema);
+export default mongoose.model("dragontigerfight_betlogs", Schema);
