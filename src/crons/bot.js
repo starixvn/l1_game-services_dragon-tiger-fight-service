@@ -14,6 +14,7 @@ export default class Bot extends Table.Crons.TableGameBot {
         this.tigerColorOpts = ["blackTiger", "redTiger"];
         this.tieOpts = ["tie"];
         this.hedgeBetGroups = [this.dragonTigerOpts];
+        this.smallTicketRatio = 70;
     }
 
     resetAllBotData() {
