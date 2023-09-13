@@ -11,6 +11,7 @@ const bet = {
     redDragon: { type: Number, default: 0 },
     blackTiger: { type: Number, default: 0 },
     redTiger: { type: Number, default: 0 },
+    totalAmount: { type: Number, default: 0 },
 
     betwin: { type: Number, default: 0 },
     time: { type: Date },
@@ -26,13 +27,13 @@ const bet = {
 };
 
 const bets = mongoose.model(
-    "dragontigerfight_ones",
+    "dragontigerfight_bets",
     new mongoose.Schema({
         ...bet,
         currency: { type: String },
         rate: { type: Number, required: true },
     })
 );
-const tmpBets = mongoose.model("dragontigerfight_tmpones", new mongoose.Schema(bet));
+const tmpBets = mongoose.model("dragontigerfight_tmpbets", new mongoose.Schema(bet));
 
 export { bets, tmpBets };

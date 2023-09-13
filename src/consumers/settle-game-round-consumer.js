@@ -46,5 +46,5 @@ export default class SettleGameRoundConsumer extends Table.EventConsumers.TableS
         betResult.netWin = parseFloat(betResult.netWin.toFixed(2));
 
         return betResult;
-    }    
+    }
 }

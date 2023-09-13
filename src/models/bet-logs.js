@@ -4,8 +4,12 @@ const Schema = new mongoose.Schema({
     uid: { type: String, required: true },
     name: { type: String, required: true },
 
-    choice: { type: String, required: true },
-    amount: { type: Number, required: true },
+    choice: { type: String },
+    amount: { type: Number, default: 0, required: true },
+
+    rebet: { type: Boolean, default: false },
+    clientSentTime: { type: Date },
+    receivedTime: { type: Date },
 
     time: { type: Date },
 
@@ -19,4 +23,4 @@ const Schema = new mongoose.Schema({
     roundId: { type: Number, default: 0, required: true },
 });
 
-export default mongoose.model("dragontigerfight_bets", Schema);
+export default mongoose.model("dragontigerfight_betlogs", Schema);

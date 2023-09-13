@@ -31,19 +31,19 @@ const gameConfig = {
 const roundsData = [
     {
         id: 1190119,
-        result: { dragon: {card: 2, type: 1}, tiger: {card: 3, type: 2} },
+        result: { dragon: {rank: 2, suit: 1}, tiger: {rank: 3, suit: 2} },
         settlementResult: { dragon: true, tiger: false, tie: false, blackDragon: false, redDragon: true, blackTiger: true, redTiger: false},
         exchangeRateId: 1,
     },
     {
         id: 1190118,
-        result: { dragon: {card: 2, type: 1}, tiger: {card: 3, type: 2} },
+        result: { dragon: {rank: 2, suit: 1}, tiger: {rank: 3, suit: 2} },
         settlementResult: { dragon: true, tiger: false, tie: false, blackDragon: false, redDragon: true, blackTiger: true, redTiger: false},
         exchangeRateId: 1,
     },
     {
         id: 1190117,
-        result: { dragon: {card: 2, type: 1}, tiger: {card: 3, type: 2} },
+        result: { dragon: {rank: 2, suit: 1}, tiger: {rank: 3, suit: 2} },
         settlementResult: { dragon: true, tiger: false, tie: false, blackDragon: false, redDragon: true, blackTiger: true, redTiger: false},
         exchangeRateId: 1,
     },
@@ -56,16 +56,14 @@ const userBetData = (uid) => {
             uid: uid,
             betwin: 0,
             currency: "$US",
-            even: 100,
             playerId: 1,
             name: "NormalUser",
-            odd: 0,
             odds: gameConfig.odds,
             operatorId: "dummy-operator-id",
             rate: 1,
-            dragon: 100,
+            dragon: 102,
             tiger: 0,
-            tie: 0,
+            tie: 12,
             blackDragon: 0,
             redDragon: 0,
             blackTiger: 0,
@@ -73,6 +71,7 @@ const userBetData = (uid) => {
             siteId: "111",
             roundId: 1190119,
             paid: true,
+            totalAmount: 114,
         },
         {
             freeBet: false,
@@ -85,7 +84,7 @@ const userBetData = (uid) => {
             odds: gameConfig.odds,
             operatorId: "dummy-operator-id",
             rate: 1,
-            dragon: 0,
+            dragon: 10,
             tiger: 0,
             tie: 100,
             blackDragon: 0,
@@ -95,6 +94,7 @@ const userBetData = (uid) => {
             siteId: "111",
             roundId: 1190120,
             paid: true,
+            totalAmount: 110,
         },
     ];
 };
@@ -108,11 +108,11 @@ const userBetLogData = (uid) => {
             playerId: 1,
             name: "NormalUser",
             operatorId: "dummy-operator-id",
+            choice: "tie",
+            amount: 100,
             rate: 1,
             siteId: "111",
-            roundId: 1190120,
-            choice: "tie",
-            amount: 100
+            roundId: 1190120,            
         },        
     ];
 };

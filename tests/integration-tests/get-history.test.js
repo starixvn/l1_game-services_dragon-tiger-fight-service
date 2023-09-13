@@ -6,7 +6,8 @@ const path = require("path");
 
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-startService(processId);
+const overrideGameConfigs = {botenabled: false};
+startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);
@@ -24,31 +25,30 @@ describe("when get history", () => {
         });
         const expectedData = [
             {
-                dragon: 0,
+                dragon: 10,
                 tiger: 0,
                 tie: 100,
                 blackDragon: 0,
                 redDragon: 0,
                 blackTiger: 0,
                 redTiger: 0,
-                betwin: 0,
                 freeBet: false,
                 name: "NormalUser",
                 odds: { dragon: 1.97, tiger: 1.97, tie: 3.76, blackDragon: 3.76, redDragon: 14.5, blackTiger: 14.5, redTiger: 2.5 },
                 rate: 1,
-                betLogDetails: [{"choice":"tie","amount":100}],
+                betLogDetails: [{choice: "tie", amount: 100, rebet: false, rate: 1, roundId: 1190120}],
                 roundId: 1190120,
                 phien: 1190120,
+                totalAmount: 110
             },
             {
-                dragon: 100,
+                dragon: 102,
                 tiger: 0,
-                tie: 0,
+                tie: 12,
                 blackDragon: 0,
                 redDragon: 0,
                 blackTiger: 0,
                 redTiger: 0,
-                betwin: 0,
                 freeBet: false,
                 name: "NormalUser",
                 odds: { dragon: 1.97, tiger: 1.97, tie: 3.76, blackDragon: 3.76, redDragon: 14.5, blackTiger: 14.5, redTiger: 2.5 },
@@ -56,6 +56,7 @@ describe("when get history", () => {
                 betLogDetails: [],
                 roundId: 1190119,
                 phien: 1190119,
+                totalAmount: 114
             },
         ];
 
@@ -71,6 +72,7 @@ describe("when get history", () => {
                             const actualBetLogs = data.history.betLogs.map((betLog) => {
                                 delete betLog.result;
                                 delete betLog.settlementResult;
+                                delete betLog.betwin;
                                 return betLog;
                             });
 
@@ -88,3 +90,4 @@ describe("when get history", () => {
         });
     });
 });
+;

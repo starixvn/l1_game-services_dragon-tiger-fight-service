@@ -1,4 +1,4 @@
-import { cards, cardNames, cardTypes } from "./card";
+import { cards, ranks, suits } from "./card";
 import { Chance } from "chance";
 import _ from "lodash";
 import { shuffle as d3Shuffle } from "d3-array";
@@ -57,13 +57,13 @@ const randomModes = {
 };
 
 const settlementRuleEntries = Object.entries({
-    dragon: (roundResult) => roundResult.dragon.card > roundResult.tiger.card,
-    tiger: (roundResult) => roundResult.tiger.card > roundResult.dragon.card,
-    tie: (roundResult) => roundResult.tiger.card === roundResult.dragon.card,
-    blackDragon: (roundResult) => ["♣", "♠"].includes(cardTypes[roundResult.dragon.type]),
-    redDragon: (roundResult) => ["♥", "♦"].includes(cardTypes[roundResult.dragon.type]),
-    blackTiger: (roundResult) => ["♣", "♠"].includes(cardTypes[roundResult.tiger.type]),
-    redTiger: (roundResult) => ["♥", "♦"].includes(cardTypes[roundResult.tiger.type]),
+    dragon: (roundResult) => roundResult.dragon.rank > roundResult.tiger.rank,
+    tiger: (roundResult) => roundResult.tiger.rank > roundResult.dragon.rank,
+    tie: (roundResult) => roundResult.tiger.rank === roundResult.dragon.rank,
+    blackDragon: (roundResult) => ["♣", "♠"].includes(suits[roundResult.dragon.suit]),
+    redDragon: (roundResult) => ["♥", "♦"].includes(suits[roundResult.dragon.suit]),
+    blackTiger: (roundResult) => ["♣", "♠"].includes(suits[roundResult.tiger.suit]),
+    redTiger: (roundResult) => ["♥", "♦"].includes(suits[roundResult.tiger.suit]),
 });
 
 export const generateResult = (randomMode) => {
@@ -84,5 +84,5 @@ export const getSettlementResult = (roundResult) => {
 };
 
 export const generateRawResultForHash = ({dragon, tiger}) => {
-    return `{${cardNames[dragon.card]}${cardTypes[dragon.type]} ${cardNames[tiger.card]}${cardTypes[tiger.type]}}`;
+    return `{${ranks[dragon.rank]}${suits[dragon.suit]} ${ranks[tiger.rank]}${suits[tiger.suit]}}`;
 };

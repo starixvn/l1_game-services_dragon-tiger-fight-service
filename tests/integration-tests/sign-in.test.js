@@ -6,7 +6,8 @@ import { socketOptionsFunc } from "./_stubs/test-data";
 
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-startService(processId);
+const overrideGameConfigs = {botenabled: false};
+startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
 const socketOptions = socketOptionsFunc(appConfigs.hostingPort);

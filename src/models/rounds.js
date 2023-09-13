@@ -2,19 +2,13 @@ import mongoose from "mongoose";
 
 const modelName = "dragontigerfight_rounds";
 
-const card = {
-    card: Number,
-    type: Number,
-};
-
 const resultSchema = new mongoose.Schema(
     {
-        dragon: { type: card },
-        tiger: { type: card },
+        dragon: { type: Object },
+        tiger: { type: Object },
     },
     { _id: false }
 );
-
 
 const settlementResultSchema = new mongoose.Schema(
     {
@@ -24,7 +18,7 @@ const settlementResultSchema = new mongoose.Schema(
         blackDragon: { type: Boolean, default: false },
         redDragon: { type: Boolean, default: false },
         blackTiger: { type: Boolean, default: false },
-        redTiger: { type: Boolean, default: false },        
+        redTiger: { type: Boolean, default: false },
     },
     { _id: false }
 );

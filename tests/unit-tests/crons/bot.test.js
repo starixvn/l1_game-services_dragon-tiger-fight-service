@@ -29,7 +29,7 @@ describe("bot test", () => {
 
     /** @type {mongoose.Model}*/
     const userInfosRepository = stubMongooseModelStupidly(mongoose.Model);
-    const baccaratBot = new Bot(definition, gameData, publisher, userInfosRepository, tempBetsRepository, appConfigs);
+    const botInstance = new Bot(definition, gameData, publisher, userInfosRepository, tempBetsRepository, appConfigs);
     const bot = {
         id: 1,
         name: "bot1",
@@ -41,28 +41,28 @@ describe("bot test", () => {
     };
 
     it("Inherit Table.Crons.TableGameBot", () => {
-        expect(baccaratBot instanceof Table.Crons.TableGameBot).toBeTruthy();
+        expect(botInstance instanceof Table.Crons.TableGameBot).toBeTruthy();
     });
 
     describe("resetAllBets", () => {
         it("Returns default values", () => {
-            baccaratBot.smallTickets = 10;
+            botInstance.smallTickets = 10;
     
             // act
-            baccaratBot.resetAllBets();
+            botInstance.resetAllBets();
     
-            // assert
-            expect(baccaratBot.smallTickets).toEqual(0);
+            /// assert
+            expect(botInstance.smallTickets).toEqual(0);
         });
     })
 
     describe("getBetChoice", () => {
         beforeEach(() => {
-            baccaratBot.resetAllBotData();
+            botInstance.resetAllBotData();
         });
 
         it("should return dragon tiger options when they are not reached", () => {
-            baccaratBot.allBets = {
+            botInstance.allBets = {
                 dragon: 400,
                 tiger: 300,
                 tie: 200,
@@ -72,17 +72,17 @@ describe("bot test", () => {
                 redTiger: 100,
             };
 
-            const choice = baccaratBot.getBetChoice(bot);
+            const choice = botInstance.getBetChoice(bot);
 
-            expect(baccaratBot.dragonTigerOpts).toContain(choice);
+            expect(botInstance.dragonTigerOpts).toContain(choice);
         });
 
         it("should return dragon tiger options as default", () => {
-            baccaratBot.resetAllBets();
+            botInstance.resetAllBets();
 
-            const choice = baccaratBot.getBetChoice(bot);
+            const choice = botInstance.getBetChoice(bot);
 
-            expect(baccaratBot.dragonTigerOpts).toContain(choice);
+            expect(botInstance.dragonTigerOpts).toContain(choice);
         });
     });
 
@@ -92,7 +92,7 @@ describe("bot test", () => {
             const { bot_maxbet, minbet, choices_maxbet } = gameData.gameConfigs;
             const maxBet = Math.min(bot_maxbet, choices_maxbet[choice]);
 
-            const actualResult = baccaratBot.getMaxBet(bot, choice);
+            const actualResult = botInstance.getMaxBet(bot, choice);
 
             expect(actualResult).toBeWithin(minbet, maxBet);
         });
@@ -104,7 +104,7 @@ describe("bot test", () => {
             spyOn(Table.Crons.TableGameBot.prototype, "updateBotInRoomData");
     
             // act
-            baccaratBot.updateBotInRoomData(bot, "dragon", 10, 100);
+            botInstance.updateBotInRoomData(bot, "dragon", 10, 100);
     
             // assert
             expect(Table.Crons.TableGameBot.prototype.updateBotInRoomData).toHaveBeenCalled();
@@ -115,25 +115,25 @@ describe("bot test", () => {
         it("Calls specific functions", () => {
             // arrange
             spyOn(Table.Crons.TableGameBot.prototype, "resetAllBotData");
-            spyOn(baccaratBot, "resetAllBets");
+            spyOn(botInstance, "resetAllBets");
     
             // act
-            baccaratBot.resetAllBotData();
+            botInstance.resetAllBotData();
     
             // assert
             expect(Table.Crons.TableGameBot.prototype.resetAllBotData).toHaveBeenCalled();
-            expect(baccaratBot.resetAllBets).toHaveBeenCalled();
+            expect(botInstance.resetAllBets).toHaveBeenCalled();
         });
     })
    
     describe("shouldAddBot", () => {
         it("should add bot when botsInRoom < maxNumberOfBots and random is inOutValues", () => {
             // arrange
-            baccaratBot.botsInRoom = {"1": {}, "2": {}};
-            baccaratBot.maxNumberOfBots = 3;
+            botInstance.botsInRoom = {"1": {}, "2": {}};
+            botInstance.maxNumberOfBots = 3;
     
             // act
-            const result = baccaratBot.shouldAddBot(3);
+            const result = botInstance.shouldAddBot(3);
     
             // assert
             expect(result).toBe(true);
@@ -141,11 +141,11 @@ describe("bot test", () => {
 
         it("should NOT add bot when botsInRoom >= maxNumberOfBots", () => {
             // arrange
-            baccaratBot.botsInRoom = {"1": {}, "2": {}};
-            baccaratBot.maxNumberOfBots = 2;
+            botInstance.botsInRoom = {"1": {}, "2": {}};
+            botInstance.maxNumberOfBots = 2;
     
             // act
-            const result = baccaratBot.shouldAddBot(3);
+            const result = botInstance.shouldAddBot(3);
     
             // assert
             expect(result).toBe(false);
@@ -153,11 +153,11 @@ describe("bot test", () => {
 
         it("should NOT add bot when random is not inOutValues", () => {
             // arrange
-            baccaratBot.botsInRoom = {"1": {}, "2": {}};
-            baccaratBot.maxNumberOfBots = 3;
+            botInstance.botsInRoom = {"1": {}, "2": {}};
+            botInstance.maxNumberOfBots = 3;
     
             // act
-            const result = baccaratBot.shouldAddBot(4);
+            const result = botInstance.shouldAddBot(4);
     
             // assert
             expect(result).toBe(false);
@@ -167,10 +167,10 @@ describe("bot test", () => {
     describe("getBotsToBet", () => {
         it("when botsToBet < max numberBotsToBet - return all botsToBet", () => {
              // arrange
-             baccaratBot.botsInRoom = {"1": {totalBet: 10, remainTickets: 2}, "2": {totalBet: 11, remainTickets: 2}};
+             botInstance.botsInRoom = {"1": {totalBet: 10, remainTickets: 2}, "2": {totalBet: 11, remainTickets: 2}};
      
              // act
-             const result = baccaratBot.getBotsToBet();
+             const result = botInstance.getBotsToBet();
      
              // assert
              expect(result.length).toBe(2);
@@ -178,7 +178,7 @@ describe("bot test", () => {
 
         it("when botsToBet > max numberBotsToBet - return max numberBotsToBet", () => {
             // arrange
-            baccaratBot.botsInRoom = {
+            botInstance.botsInRoom = {
                 "1": {totalBet: 10, remainTickets: 2}, 
                 "2": {totalBet: 11, remainTickets: 2},  
                 "3": {totalBet: 11, remainTickets: 2},  
@@ -187,10 +187,10 @@ describe("bot test", () => {
                 "6": {totalBet: 11, remainTickets: 2},
                 "7": {totalBet: 11, remainTickets: 2}
             };
-            baccaratBot.gameData.remainingTime = 10;
+            botInstance.gameData.remainingTime = 10;
     
             // act
-            const result = baccaratBot.getBotsToBet();
+            const result = botInstance.getBotsToBet();
     
             // assert
             expect(result.length).toBe(5);
