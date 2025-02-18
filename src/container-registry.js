@@ -2,7 +2,7 @@ import awilix from "awilix";
 import { Table, Core } from "sc-game-base";
 import { SettleGameRoundConsumer, PlaceBetConsumer } from "./consumers";
 import { bets, rounds, tmpBets, results, betLogs } from "./models/index";
-import { Bot } from "./crons/index";
+import { Bot, ProcessBetQueue } from "./crons/index";
 import { RebetContainerRegistry, Crons } from "sc-rebet-mode";
 import HistoryQuery from "./query-apis/history-query";
 
@@ -14,7 +14,7 @@ export default class ContainerRegistry extends Table.TableContainerRegistry {
 
         this.container.register(new RebetContainerRegistry().registerTableGame(Core.Routers.BaseSocketRouter));
         this.container.register({
-            processBetQueue: asClass(Crons.TableProcessBetQueueSeparateBetLog).singleton().proxy(),
+            processBetQueue: asClass(ProcessBetQueue).singleton().proxy(),
         });
 
 
