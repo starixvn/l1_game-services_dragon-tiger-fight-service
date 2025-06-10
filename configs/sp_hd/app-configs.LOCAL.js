@@ -31,7 +31,7 @@ export default {
         },
     },
     sentry: {
-        sentryUrl: "https://81e47b9ef0c34ab08c30a8612d9a348e@sentry.lumigame.com/85",
+        sentryUrl: "https://ba7f44ebc6d945719efca29e917b4de0@sentry.lumigame.com/104",
         logIdentifier: "DragonTigerFight",
         env: "LOCAL",
     },
