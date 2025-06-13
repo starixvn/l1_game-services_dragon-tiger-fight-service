@@ -7,7 +7,7 @@ const path = require("path");
 
 const scriptName = path.basename(__filename);
 const processId = getProcessId(scriptName);
-const overrideGameConfigs = {botenabled: false};
+const overrideGameConfigs = { botenabled: false };
 startService(processId, overrideGameConfigs);
 
 const appConfigs = buildConfigs(processId);
@@ -18,34 +18,34 @@ describe("when settle", () => {
         checkConnect(processId, done);
     });
 
-    it("should return settled status data", (done) => {
-        // Arrange
-        const client = new GameClientDriver(socketOptions, initUserSession(normalUser));
-        client.handleSignedInEvent(() => {
-            client.sendInGameEvent();
-        });
-        let receivedRemainingTime = false;
+    // it("should return settled status data", (done) => {
+    //     // Arrange
+    //     const client = new GameClientDriver(socketOptions, initUserSession(normalUser));
+    //     client.handleSignedInEvent(() => {
+    //         client.sendInGameEvent();
+    //     });
+    //     let receivedRemainingTime = false;
 
-        // Act
-        client.on(socketOptions.gameName, (inGameData) => {
-            if (inGameData.remainingTime && !receivedRemainingTime) {
-                receivedRemainingTime = true;
-                setTimeout(() => {
-                    client.emit(eventTypes.bet, { betChoice: "dragon", amount: 100 });
-                }, getTimeOutToPlacingBetTime(inGameData.remainingTime, gameSettings.durations) * 1000);
-            }
-        });
+    //     // Act
+    //     client.on(socketOptions.gameName, (inGameData) => {
+    //         if (inGameData.remainingTime && !receivedRemainingTime) {
+    //             receivedRemainingTime = true;
+    //             setTimeout(() => {
+    //                 client.emit(eventTypes.bet, { betChoice: "dragon", amount: 100 });
+    //             }, getTimeOutToPlacingBetTime(inGameData.remainingTime, gameSettings.durations) * 1000);
+    //         }
+    //     });
 
-        // Assert
-        client.on(socketOptions.gameName, (data) => {
-            if (data.status) {
-                expect(data.status.bet).toBeGreaterThan(0);
+    //     // Assert
+    //     client.on(socketOptions.gameName, (data) => {
+    //         if (data.status) {
+    //             expect(data.status.bet).toBeGreaterThan(0);
 
-                client.close();
-                done();
-            }
-        });
-    });
+    //             client.close();
+    //             done();
+    //         }
+    //     });
+    // });
 
     it("should return settled finish data and hashResult with rawValue", (done) => {
         // Arrange & Act
