@@ -22,7 +22,7 @@ export default {
     },
     enabledLogs: true,
     database: {
-        url: "mongodb://lmn_backend:LmnBackend%4022027@10.146.34.28:39520/?replicaSet=SP-UAT&appName=DragonTigerFight",
+        url: "mongodb://hotdog_backend:HotdogBackend%4022027@10.146.34.28:39520/?replicaSet=SP-UAT&appName=DragonTigerFight",
         options: {
             dbName: "hotdog_minigame",
             useNewUrlParser: true,
