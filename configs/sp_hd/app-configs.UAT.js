@@ -31,7 +31,7 @@ export default {
         },
     },
     sentry: {
-        sentryUrl: "http://d039f2abe16b4252a70cdf60fff232b6@10.2.190.51:9009/282",
+        sentryUrl: "https://f4980024f65945179a125e7ce17286d0@sentry-ovs.sgamesuat.com/178",
         logIdentifier: "HD-DragonTigerFight",
         env: "UAT",
     },
